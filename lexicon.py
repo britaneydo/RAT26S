@@ -17,9 +17,6 @@ id_acceptingStates = {'B', 'C', 'D', 'E'}
 
 startingState = 'A'
 
-# !!! remember to add keywords as needed !!!
-keywords = {'integer', 'if', 'otherwise', 'fi', 'else', 'while', 'for', 'return', 'read', 'write'}
-
 # function to determine char type (letter/digit/underscore)
 def getCharType(c):
 
@@ -57,7 +54,7 @@ def identifierFSM(s):
         if state is None:
             return False
     
-    # check if final state is accepting state, return TRUE if so, FALSE if not
+    # check if final state is accepting state; return TRUE if so, FALSE if not
     return state in id_acceptingStates
 
 
@@ -73,6 +70,7 @@ int_transitions = {
 
 int_acceptingStates = {'B'}
 
+# FSM function to determine if string is valid integer
 def integerFSM(s):
 
     # start from da beginning
@@ -98,7 +96,7 @@ def integerFSM(s):
         if state is None:
             return False
 
-    # check if final state is accepting state, return TRUE if so, FALSE if not
+    # check if final state is accepting state; return TRUE if so, FALSE if not
     return state in int_acceptingStates
 
 
@@ -108,11 +106,60 @@ def integerFSM(s):
 # ===================================================================================================
 
 real_transitions = {
+    'A': {'d': 'B', '.': None},
+    'B': {'d': 'B', '.': 'C'},
+    'C': {'d': 'D', '.': None},
+    'D': {'d': 'D', '.': None},
 }
 
+real_acceptingStates = {'D'}
 
+#function to determine char type for real numbers (digit or decimal point)
+def realType(c):
 
+    if c.isdigit():
+        return 'd'
+    elif c == '.':
+        return '.'
+    else:
+        return None
+    
+# FSM function to determine if string is valid real number
+def realFSM(s):
 
+    # start from da beginning again
+    state = startingState
+
+    #loop thru every char in string
+    for char in s:
+
+        # get char type
+        charType = realType(char)
+
+        # error handling
+        if charType is None:
+            return False
+
+        # move onto next state based on char type
+        state = real_transitions[state].get(charType)
+
+        # error handling
+        if state is None:
+            return False
+    
+    # check if final state is accepting state; return TRUE if so, FALSE if not
+    return state in real_acceptingStates
+
+# ===================================================================================================
+# LEXER
+# ===================================================================================================
+
+# !!! remember to add keywords/operators/separators as needed !!!
+keywords = {'integer', 'if', 'otherwise', 'fi', 'else', 'while', 'for', 'return', 'read', 'write'}
+operators = {'+', '-', '*', '/', '=', '==', '!=', '<', '>', '<=', '>='}
+separators = {'(', ')', '{', '}', '[', ']', ';', ','}
+
+# implement lexer here... tired...
 
 
 
