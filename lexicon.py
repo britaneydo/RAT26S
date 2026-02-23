@@ -1,47 +1,10 @@
-# class definition for NFSM
-""" class FSM:
-
-    #CSTR
-    def __init__(self):
-
-        # dictionary for transitions
-        # edit with (add_transitions()), ()
-        self.transitions = {}
-        
-        # epsilon transitions
-        self.epsilon = {}
-
-        # machine starting state
-        self.start = None
-
-        # machine accepting state
-        self.accept = None
-
-    # s1 --symbol--> s2
-    def Add_Transition(self, s1, symbol, s2):
-
-        # input symbol; (s1 --symbol--> s2) if possible
-        # if this symbol does not exist, create it, along with its empty set
-        # two layer set (nested dictionary), same symbol can result in different output states
-        self.transitions.setdefault(s1, {}).setdefault(symbol, set()).add(s2)
-    
-    # s1 --> s2
-    def Add_Epsilon(self, s1, s2):
-
-        # one layer set since epsilon is essentially no input
-        self.epsilon.setdefault(s1, set()).add(s2)
-    
-    def Epsilon_Closure(machine, states):
-        
-
- """
-
-
-
-# =========================================================
+# ===================================================================================================
+# FSM for identifiers
+# l(l|d|_)*
+# ===================================================================================================
 
 # DFA table from FSM stored into Python dictionary
-transitions = {
+id_transitions = {
     'A': {'l': 'B', 'd': None, '_': None},
     'B': {'l': 'C', 'd': 'D', '_': 'E'},
     'C': {'l': 'C', 'd': 'D', '_': 'E'},
@@ -50,7 +13,7 @@ transitions = {
 }
 
 # all states with state 11 in them (accepting states)
-acceptingStates = {'B', 'C', 'D', 'E'}
+id_acceptingStates = {'B', 'C', 'D', 'E'}
 
 startingState = 'A'
 
@@ -73,7 +36,7 @@ def getCharType(c):
 
 # FSM function to determine if string is valid identifier
 # read string, then check if identifier
-def FSM(s):
+def identifierFSM(s):
 
     state = startingState
 
@@ -88,14 +51,68 @@ def FSM(s):
             return False
         
         # move onto next state based on char type
-        state = transitions[state].get(charType)
+        state = id_transitions[state].get(charType)
 
         # error handling
         if state is None:
             return False
     
-    # check if final state is accepting state, return
-    return state in acceptingStates
+    # check if final state is accepting state, return TRUE if so, FALSE if not
+    return state in id_acceptingStates
+
+
+# ===================================================================================================
+# FSM for integers
+# d+
+# ===================================================================================================
+
+int_transitions = {
+    'A': {'d': 'B'},
+    'B': {'d': 'B'},
+}
+
+int_acceptingStates = {'B'}
+
+def integerFSM(s):
+
+    # start from da beginning
+    state = startingState
+
+    # loop thru every char in string
+    for char in s:
+        
+        # check if digit
+        if char.isdigit():
+            charType = 'd'
+        else:
+            charType = None
+
+        # error handling
+        if charType is None:
+            return False
+
+        # move onto next state based on char type
+        state = int_transitions[state].get(charType)
+
+        # error handling
+        if state is None:
+            return False
+
+    # check if final state is accepting state, return TRUE if so, FALSE if not
+    return state in int_acceptingStates
+
+
+# ===================================================================================================
+# FSM for real numbers
+# d+ . d+
+# ===================================================================================================
+
+real_transitions = {
+}
+
+
+
+
 
 
 
