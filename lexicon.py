@@ -12,6 +12,9 @@ id_transitions = {
     'E': {'l': 'C', 'd': 'D', '_': 'E'},
 }
 
+# !!! remember to add keywords as needed !!!
+keywords = {'integer', 'if', 'otherwise', 'fi', 'else', 'while', 'for', 'return', 'read', 'write'}
+
 # all states with state 11 in them (accepting states)
 id_acceptingStates = {'B', 'C', 'D', 'E'}
 
@@ -154,9 +157,10 @@ def realFSM(s):
 # LEXER
 # ===================================================================================================
 
-# !!! remember to add keywords/operators/separators as needed !!!
-keywords = {'integer', 'if', 'otherwise', 'fi', 'else', 'while', 'for', 'return', 'read', 'write'}
-operators = {'+', '-', '*', '/', '=', '==', '!=', '<', '>', '<=', '>='}
+# !!! remember to add operators/separators as needed !!!
+operators = {'+', '-', '*', '/', '=', '<', '>'}
+# need this bc operators have diff string sizes
+operator2 = {'==', '!=', '<=', '>='} 
 separators = {'(', ')', '{', '}', '[', ']', ';', ','}
 
 def lexer(file):
@@ -169,6 +173,8 @@ def lexer(file):
         # skip whitespace
         if file[i].isspace():
             i += 1
+
+            # continue with papa loop
             continue
     
         # skip comments /* ... */
@@ -183,44 +189,117 @@ def lexer(file):
 
             # skip past */
             i += 2
+
+            # continue with papa loop
+            continue
+
+        # check for operators
+        if file[i:i+2] in operator2:
+            tokens.append(('OPERATOR', file[i:i+2]))
+            i += 2
+
+            # continue with papa loop
+            continue
+
+        if file[i] in operators:
+            tokens.append(('OPERATOR', file[i]))
+            i += 1
+
+            # continue with papa loop
+            continue
+
+        # check for separators
+        if file[i] in separators:
+            tokens.append(('SEPARATOR', file[i]))
+            i += 1
+
+            # continue with papa loop
             continue
 
         # check for keywords/identifiers
         # nested loop prob to check ahead
         if file[i].isalpha():
+            
+            # look ahead!!
+            j = i
+
+            # while the next char is a letter/digit/underscore, run run run
+            # also make sure we don't go out of bounds
+            # STOP as soon as no longer in identifier char type. this way we don't have to depend on whitespace to separate tokens
+            while j < len(file) and (file[j].isalpha() or file[j].isdigit() or file[j] == '_'):
+                j += 1
+
+            # slice out word from file
+            # from i to just before j
+            word = file[i:j]
+
+            # run thru identifier FSM to make sure it's valid, then check if it's a keyword or identifier
+            if identifierFSM(word):
+                if word in keywords:
+                    tokens.append(('KEYWORD', word))
+                else:
+                    tokens.append(('IDENTIFIER', word))
+
+            # error handling
+            else:
+                tokens.append(('ERROR', word))
+            
+            # reset i to j to continue scanning from the end of the word
+            i = j
+
+            # continue with papa loop
+            continue
+
+        # check for integers/real numbers
+        if file[i].isdigit():
 
             j = i
 
-        
+            # while the next char is a digit or decimal point, run run run
+            # also make sure we don't go out of bounds
+            # STOP as soon as no longer int/real. this way we don't have to depend on whitespace to separate tokens
+            while j < len(file) and (file[j].isdigit() or file[j] == '.'):
+                j += 1
 
+            # slice out num from file
+            # from i to just before j
+            num = file[i:j]
 
+            # check if real or integer
+            if realFSM(num):
+                tokens.append(('REAL', num))
+            elif integerFSM(num):
+                tokens.append(('INTEGER', num))
 
+            # error handling
+            else:
+                tokens.append(('ERROR', num))
+            
+            # reset i to j to continue scanning from the end of the num
+            i = j
 
+            # continue with papa loop
+            continue
 
+        # check for invalid char
+        tokens.append(('ERROR', file[i]))
+        i += 1
 
+    return tokens
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# =========================================================
+# ===================================================================================================
+# Printing all Tokens
+# ===================================================================================================
 
 # open file, read char
 with open("test.txt", "r") as f:
     file = f.read()
 
+# run lexer!!!
 tokens = lexer(file)
+
+# print tokens
+for token in tokens:
+    print(token)
+
+# yay!
