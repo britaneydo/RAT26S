@@ -159,7 +159,45 @@ keywords = {'integer', 'if', 'otherwise', 'fi', 'else', 'while', 'for', 'return'
 operators = {'+', '-', '*', '/', '=', '==', '!=', '<', '>', '<=', '>='}
 separators = {'(', ')', '{', '}', '[', ']', ';', ','}
 
-# implement lexer here... tired...
+def lexer(file):
+
+    tokens = []
+    i = 0
+
+    while i < len(file):
+
+        # skip whitespace
+        if file[i].isspace():
+            i += 1
+            continue
+    
+        # skip comments /* ... */
+        if file[i:i+2] == '/*':
+
+            # skip past /*
+            i += 2
+
+            # while comment is unfinished
+            while file[i:i+2] != '*/':
+                i += 1
+
+            # skip past */
+            i += 2
+            continue
+
+        # check for keywords/identifiers
+        # nested loop prob to check ahead
+        if file[i].isalpha():
+
+            j = i
+
+        
+
+
+
+
+
+
 
 
 
@@ -182,15 +220,7 @@ separators = {'(', ')', '{', '}', '[', ']', ';', ','}
 # =========================================================
 
 # open file, read char
-with open("test.txt", "r") as file:
+with open("test.txt", "r") as f:
+    file = f.read()
 
-    while True:
-        c = file.read(1)
-
-        # EOF handler
-        if not c:
-            break
-
-        # can add repr before (c) if want clearer representation
-        # delete this line once code is finished
-        print((c), end = '')
+tokens = lexer(file)
