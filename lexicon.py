@@ -292,7 +292,7 @@ def lexer(file):
 # ===================================================================================================
 
 # open file, read char
-with open("test1.txt", "r") as f:
+with open("test_files/test1.txt", "r") as f:
     file = f.read()
 
 # run lexer!!!
