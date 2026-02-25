@@ -292,7 +292,7 @@ def lexer(file):
 # ===================================================================================================
 
 # open file, read char
-with open("test3.txt", "r") as f:
+with open("test1.txt", "r") as f:
     file = f.read()
 
 # run lexer!!!
@@ -302,4 +302,11 @@ tokens = lexer(file)
 for token in tokens:
     print(token)
 
+""" 
+# write tokens to output file
+with open("test1output.txt", "w") as out:
+    for token in tokens:
+        out.write(f"{token}\n")
+
+"""
 # yay!
