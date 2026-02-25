@@ -160,7 +160,7 @@ def realFSM(s):
 # !!! remember to add operators/separators as needed !!!
 operators = {'+', '-', '*', '/', '=', '<', '>'}
 # need this bc operators have diff string sizes
-operator2 = {'==', '!=', '<=', '>='} 
+operator2 = {'==', '!=', '<=', '>=', '&&', '||', '++', '--', '+=', '-=', '*=', '/='} 
 separators = {'(', ')', '{', '}', '[', ']', ';', ','}
 
 def lexer(file):
@@ -292,7 +292,7 @@ def lexer(file):
 # ===================================================================================================
 
 # open file, read char
-with open("test.txt", "r") as f:
+with open("test3.txt", "r") as f:
     file = f.read()
 
 # run lexer!!!

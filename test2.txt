@@ -1,0 +1,15 @@
+int main(void)
+{
+	temp;
+	result;
+
+	while(result != EOF)
+	{
+		result = scanf(x, temp);
+		
+		printf(c, temp);
+	}
+
+	return 0;
+	
+} /* end of "main" */

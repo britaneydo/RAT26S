@@ -1,0 +1,36 @@
+void PrintBox (width, height, type)
+{
+	for (i = 1; i <= height; i++)
+	{
+		if (i == height || i == 1)
+		{
+			PrintChars(type, width);
+		}
+		else
+		{
+			for (j = 1; j <= width; j++)
+			{
+				if (j == 1 || j == width)
+				{
+					PrintChars(type, 1);
+				}
+				else
+				{
+					PrintChars( , 1);
+				}
+			}
+		}
+
+		PrintChars(\n, 1);
+	}
+	
+} /* end of "PrintBox" */
+
+void PrintChars (char type, int val)
+{	
+	for(i = val; i > 0; i--)
+	{
+		printf(c, type);	
+	}
+	
+} /* end of "PrintChars" */
