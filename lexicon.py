@@ -302,7 +302,11 @@ tokens = lexer(file)
 for token in tokens:
     print(token)
 
-""" 
+"""
+# for lexicon.exe
+input("press enter to exit...")
+
+ 
 # write tokens to output file
 with open("test1output.txt", "w") as out:
     for token in tokens:
