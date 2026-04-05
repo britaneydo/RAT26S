@@ -13,7 +13,7 @@ id_transitions = {
 }
 
 # !!! remember to add keywords as needed !!!
-keywords = {'integer', 'if', 'otherwise', 'fi', 'else', 'while', 'for', 'return', 'read', 'write'}
+keywords = {'integer', 'if', 'otherwise', 'fi', 'else', 'while', 'for', 'return', 'read', 'write', 'real', 'string', 'boolean', 'true', 'false'}
 
 # all states with state 11 in them (accepting states)
 id_acceptingStates = {'B', 'C', 'D', 'E'}
@@ -161,7 +161,7 @@ def realFSM(s):
 operators = {'+', '-', '*', '/', '=', '<', '>'}
 # need this bc operators have diff string sizes
 operator2 = {'==', '!=', '<=', '>=', '&&', '||', '++', '--', '+=', '-=', '*=', '/='} 
-separators = {'(', ')', '{', '}', '[', ']', ';', ','}
+separators = {'(', ')', '{', '}', '[', ']', ';', ',', '@'}
 
 def lexer(file):
 
