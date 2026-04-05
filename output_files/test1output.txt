@@ -1,10 +1,97 @@
-('KEYWORD', 'while')
-('SEPARATOR', '(')
-('IDENTIFIER', 'fahr')
-('OPERATOR', '<=')
-('IDENTIFIER', 'upper')
-('SEPARATOR', ')')
-('IDENTIFIER', 'a')
-('OPERATOR', '=')
-('REAL', '23.00')
-('SEPARATOR', ';')
+Token: Identifier           Lexeme: a
+     <Program> -> <Statement List>
+     <Statement List> -> <Statement> <Statement List Prime>
+     <Statement> -> <Assign>
+     <Assign> -> <Identifier> = <Expression> ;
+     <Identifier> -> id
+Token: Operator             Lexeme: =
+Token: Integer              Lexeme: 5
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Integer>
+Token: Separator            Lexeme: ;
+     <Term Prime> -> ε
+     <Expression Prime> -> ε
+Token: Identifier           Lexeme: b
+     <Statement List Prime> -> <Statement> <Statement List Prime>
+     <Statement> -> <Assign>
+     <Assign> -> <Identifier> = <Expression> ;
+     <Identifier> -> id
+Token: Operator             Lexeme: =
+Token: Identifier           Lexeme: a
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Identifier>
+     <Identifier> -> id
+Token: Operator             Lexeme: +
+     <Term Prime> -> ε
+     <Expression Prime> -> + <Term> <Expression Prime>
+Token: Integer              Lexeme: 3
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Integer>
+Token: Separator            Lexeme: ;
+     <Term Prime> -> ε
+     <Expression Prime> -> ε
+Token: Keyword              Lexeme: while
+     <Statement List Prime> -> <Statement> <Statement List Prime>
+     <Statement> -> <While>
+     <While> -> while ( <Expression> ) <Statement>
+Token: Separator            Lexeme: (
+Token: Identifier           Lexeme: b
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Identifier>
+     <Identifier> -> id
+Token: Operator             Lexeme: >
+     <Term Prime> -> ε
+     <Expression Prime> -> <RelOp> <Term> <Expression Prime>
+     <RelOp> -> >
+Token: Integer              Lexeme: 2
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Integer>
+Token: Separator            Lexeme: )
+     <Term Prime> -> ε
+     <Expression Prime> -> ε
+Token: Identifier           Lexeme: b
+     <Statement> -> <Assign>
+     <Assign> -> <Identifier> = <Expression> ;
+     <Identifier> -> id
+Token: Operator             Lexeme: =
+Token: Identifier           Lexeme: b
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Identifier>
+     <Identifier> -> id
+Token: Operator             Lexeme: -
+     <Term Prime> -> ε
+     <Expression Prime> -> - <Term> <Expression Prime>
+Token: Integer              Lexeme: 1
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Integer>
+Token: Separator            Lexeme: ;
+     <Term Prime> -> ε
+     <Expression Prime> -> ε
+Token: Identifier           Lexeme: a
+     <Statement List Prime> -> <Statement> <Statement List Prime>
+     <Statement> -> <Assign>
+     <Assign> -> <Identifier> = <Expression> ;
+     <Identifier> -> id
+Token: Operator             Lexeme: =
+Token: Identifier           Lexeme: b
+     <Expression> -> <Term> <Expression Prime>
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Identifier>
+     <Identifier> -> id
+Token: Operator             Lexeme: +
+     <Term Prime> -> ε
+     <Expression Prime> -> + <Term> <Expression Prime>
+Token: Identifier           Lexeme: c
+     <Term> -> <Factor> <Term Prime>
+     <Factor> -> <Identifier>
+     <Identifier> -> id
+Token: Separator            Lexeme: ;
+     <Term Prime> -> ε
+     <Expression Prime> -> ε
+     <Statement List Prime> -> ε
+
+Parsing Completed Successfully!

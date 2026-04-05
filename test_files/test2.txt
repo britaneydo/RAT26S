@@ -1,15 +1,13 @@
-int main(void)
+a = 10;
+b = 2;
+c = a + b;
+while (c >= b)
 {
-	temp;
-	result;
-
-	while(result != EOF)
-	{
-		result = scanf(x, temp);
-		
-		printf(c, temp);
-	}
-
-	return 0;
-	
-} /* end of "main" */
+d = c - b;
+e = d + a;
+b = b + 1;
+c = c - 1;
+f = e + d;
+g = f - a;
+}
+h = g + 1;
