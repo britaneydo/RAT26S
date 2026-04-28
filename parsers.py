@@ -3,6 +3,7 @@
 # Assignment 2 – Syntax Analyzer
 # ==========================================================
 
+import sys
 from lexicon import lexer
 from contextlib import redirect_stdout
 
@@ -73,7 +74,7 @@ def error(expected):
     print(f"Found Token: {format_token_name(current_token[0])}")
     print(f"Found Lexeme: {current_token[1]}")
     print(f"At token index: {token_index}")
-    exit()
+    sys.exit()
 
 
 # ==========================================
@@ -81,8 +82,37 @@ def error(expected):
 # ==========================================
 
 def Program():
-    print_rule("<Program> -> <Statement List>")
+    print_rule("<Rat26S> -> @ <Opt Function Definitions> @ <Opt Declaration List> @ <Statement List> @")
+
+    if current_token[1] == '@':
+        next_token()
+    else:
+        error("@")
+
+    # skip optional function definitions section for now
+    while current_token[1] != '@':
+        next_token()
+
+    if current_token[1] == '@':
+        next_token()
+    else:
+        error("@")
+
+    # skip declaration section for now
+    while current_token[1] != '@':
+        next_token()
+
+    if current_token[1] == '@':
+        next_token()
+    else:
+        error("@")
+
     StatementList()
+
+    if current_token[1] == '@':
+        next_token()
+    else:
+        error("@")
 
 
 # ==========================================

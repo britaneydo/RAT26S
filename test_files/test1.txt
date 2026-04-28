@@ -1,5 +1,12 @@
+@
+@
+integer a, b, c;
+@
 a = 5;
 b = a + 3;
 while (b > 2)
-b = b - 1;
-a =  b + c;
+{
+    b = b - 1;
+}
+a = b + c;
+@

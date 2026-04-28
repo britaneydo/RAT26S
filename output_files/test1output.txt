@@ -1,5 +1,15 @@
+Token: Separator            Lexeme: @
+     <Rat26S> -> @ <Opt Function Definitions> @ <Opt Declaration List> @ <Statement List> @
+Token: Separator            Lexeme: @
+Token: Keyword              Lexeme: integer
 Token: Identifier           Lexeme: a
-     <Program> -> <Statement List>
+Token: Separator            Lexeme: ,
+Token: Identifier           Lexeme: b
+Token: Separator            Lexeme: ,
+Token: Identifier           Lexeme: c
+Token: Separator            Lexeme: ;
+Token: Separator            Lexeme: @
+Token: Identifier           Lexeme: a
      <Statement List> -> <Statement> <Statement List Prime>
      <Statement> -> <Assign>
      <Assign> -> <Identifier> = <Expression> ;
@@ -52,7 +62,11 @@ Token: Integer              Lexeme: 2
 Token: Separator            Lexeme: )
      <Term Prime> -> ε
      <Expression Prime> -> ε
+Token: Separator            Lexeme: {
+     <Statement> -> <Compound>
+     <Compound> -> { <Statement List> }
 Token: Identifier           Lexeme: b
+     <Statement List> -> <Statement> <Statement List Prime>
      <Statement> -> <Assign>
      <Assign> -> <Identifier> = <Expression> ;
      <Identifier> -> id
@@ -71,6 +85,8 @@ Token: Integer              Lexeme: 1
 Token: Separator            Lexeme: ;
      <Term Prime> -> ε
      <Expression Prime> -> ε
+Token: Separator            Lexeme: }
+     <Statement List Prime> -> ε
 Token: Identifier           Lexeme: a
      <Statement List Prime> -> <Statement> <Statement List Prime>
      <Statement> -> <Assign>
@@ -92,6 +108,7 @@ Token: Identifier           Lexeme: c
 Token: Separator            Lexeme: ;
      <Term Prime> -> ε
      <Expression Prime> -> ε
+Token: Separator            Lexeme: @
      <Statement List Prime> -> ε
 
 Parsing Completed Successfully!

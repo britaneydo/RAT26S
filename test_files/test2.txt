@@ -1,13 +1,18 @@
+@
+@
+integer a, b, c, d, e, f, g, h;
+@
 a = 10;
 b = 2;
 c = a + b;
 while (c >= b)
 {
-d = c - b;
-e = d + a;
-b = b + 1;
-c = c - 1;
-f = e + d;
-g = f - a;
+    d = c - b;
+    e = d + a;
+    b = b + 1;
+    c = c - 1;
+    f = e + d;
+    g = f - a;
 }
 h = g + 1;
+@
