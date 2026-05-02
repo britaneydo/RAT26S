@@ -1,18 +1,16 @@
 @
-@
-integer a, b, c, d, e, f, g, h;
-@
-a = 10;
-b = 2;
-c = a + b;
-while (c >= b)
+function double (num integer)
 {
-    d = c - b;
-    e = d + a;
-    b = b + 1;
-    c = c - 1;
-    f = e + d;
-    g = f - a;
+return num * 2;
 }
-h = g + 1;
+@
+integer a, b, c;
+@
+a = 4;
+b = a + 6;
+while (b > 3)
+{
+b = b - 1;
+}
+c = a + b;
 @

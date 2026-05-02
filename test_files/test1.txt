@@ -1,12 +1,7 @@
 @
+function inc (num integer) { return num + 1; }
 @
-integer a, b, c;
+integer a;
 @
 a = 5;
-b = a + 3;
-while (b > 2)
-{
-    b = b - 1;
-}
-a = b + c;
 @

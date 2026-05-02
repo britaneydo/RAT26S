@@ -22,8 +22,10 @@ PRINT_RULES = True
 # OUTPUT HELPERS
 # ==========================================
 
-def format_token_name(token_type):
-    if token_type == 'IDENTIFIER':
+def format_token_name(token_type, lexeme=None):
+    if lexeme == 'function':
+        return 'Keyword'
+    elif token_type == 'IDENTIFIER':
         return 'Identifier'
     elif token_type == 'KEYWORD':
         return 'Keyword'
@@ -43,7 +45,7 @@ def format_token_name(token_type):
 
 def print_token(token):
     token_type, lexeme = token
-    print(f"Token: {format_token_name(token_type):<20} Lexeme: {lexeme}")
+    print(f"Token: {format_token_name(token_type, lexeme):<20} Lexeme: {lexeme}")
 
 
 def print_rule(rule):
@@ -68,10 +70,17 @@ def next_token():
         current_token = ('EOF', 'EOF')
 
 
+def match(expected):
+    if current_token[1] == expected:
+        next_token()
+    else:
+        error(expected)
+
+
 def error(expected):
     print("\nSyntax Error")
     print(f"Expected: {expected}")
-    print(f"Found Token: {format_token_name(current_token[0])}")
+    print(f"Found Token: {format_token_name(current_token[0], current_token[1])}")
     print(f"Found Lexeme: {current_token[1]}")
     print(f"At token index: {token_index}")
     sys.exit()
@@ -84,40 +93,160 @@ def error(expected):
 def Program():
     print_rule("<Rat26S> -> @ <Opt Function Definitions> @ <Opt Declaration List> @ <Statement List> @")
 
-    if current_token[1] == '@':
-        next_token()
-    else:
-        error("@")
+    match('@')
+    OptFunctionDefinitions()
 
-    # skip optional function definitions section for now
-    while current_token[1] != '@':
-        next_token()
+    match('@')
+    OptDeclarationList()
 
-    if current_token[1] == '@':
-        next_token()
-    else:
-        error("@")
-
-    # skip declaration section for now
-    while current_token[1] != '@':
-        next_token()
-
-    if current_token[1] == '@':
-        next_token()
-    else:
-        error("@")
-
+    match('@')
     StatementList()
 
-    if current_token[1] == '@':
+    match('@')
+
+
+# ==========================================
+# FUNCTION DEFINITIONS
+# ==========================================
+
+def OptFunctionDefinitions():
+    if current_token[1] == 'function':
+        print_rule("<Opt Function Definitions> -> <Function Definitions>")
+        FunctionDefinitions()
+    else:
+        print_rule("<Opt Function Definitions> -> ε")
+
+
+def FunctionDefinitions():
+    print_rule("<Function Definitions> -> <Function> <Function Definitions Prime>")
+    Function()
+    FunctionDefinitionsPrime()
+
+
+def FunctionDefinitionsPrime():
+    if current_token[1] == 'function':
+        print_rule("<Function Definitions Prime> -> <Function> <Function Definitions Prime>")
+        Function()
+        FunctionDefinitionsPrime()
+    else:
+        print_rule("<Function Definitions Prime> -> ε")
+
+
+def Function():
+    print_rule("<Function> -> function <Identifier> ( <Opt Parameter List> ) <Opt Declaration List> <Body>")
+
+    match('function')
+    Identifier()
+    match('(')
+    OptParameterList()
+    match(')')
+    OptDeclarationList()
+    Body()
+
+
+def OptParameterList():
+    if current_token[0] == 'IDENTIFIER':
+        print_rule("<Opt Parameter List> -> <Parameter List>")
+        ParameterList()
+    else:
+        print_rule("<Opt Parameter List> -> ε")
+
+
+def ParameterList():
+    print_rule("<Parameter List> -> <Parameter> <Parameter List Prime>")
+    Parameter()
+    ParameterListPrime()
+
+
+def ParameterListPrime():
+    if current_token[1] == ',':
+        print_rule("<Parameter List Prime> -> , <Parameter> <Parameter List Prime>")
+        match(',')
+        Parameter()
+        ParameterListPrime()
+    else:
+        print_rule("<Parameter List Prime> -> ε")
+
+
+def Parameter():
+    print_rule("<Parameter> -> <IDs> <Qualifier>")
+    IDs()
+    Qualifier()
+
+
+def Body():
+    print_rule("<Body> -> { <Statement List> }")
+    match('{')
+    StatementList()
+    match('}')
+
+
+# ==========================================
+# DECLARATIONS
+# ==========================================
+
+def OptDeclarationList():
+    if current_token[1] in ['integer', 'boolean', 'real']:
+        print_rule("<Opt Declaration List> -> <Declaration List>")
+        DeclarationList()
+    else:
+        print_rule("<Opt Declaration List> -> ε")
+
+
+def DeclarationList():
+    print_rule("<Declaration List> -> <Declaration> ; <Declaration List Prime>")
+    Declaration()
+    match(';')
+    DeclarationListPrime()
+
+
+def DeclarationListPrime():
+    if current_token[1] in ['integer', 'boolean', 'real']:
+        print_rule("<Declaration List Prime> -> <Declaration> ; <Declaration List Prime>")
+        Declaration()
+        match(';')
+        DeclarationListPrime()
+    else:
+        print_rule("<Declaration List Prime> -> ε")
+
+
+def Declaration():
+    print_rule("<Declaration> -> <Qualifier> <IDs>")
+    Qualifier()
+    IDs()
+
+
+def Qualifier():
+    if current_token[1] in ['integer', 'boolean', 'real']:
+        print_rule(f"<Qualifier> -> {current_token[1]}")
         next_token()
     else:
-        error("@")
+        error("integer | boolean | real")
+
+
+def IDs():
+    print_rule("<IDs> -> <Identifier> <IDs Prime>")
+    Identifier()
+    IDsPrime()
+
+
+def IDsPrime():
+    if current_token[1] == ',':
+        print_rule("<IDs Prime> -> , <Identifier> <IDs Prime>")
+        match(',')
+        Identifier()
+        IDsPrime()
+    else:
+        print_rule("<IDs Prime> -> ε")
 
 
 # ==========================================
 # STATEMENT LIST
 # ==========================================
+
+def starts_statement():
+    return current_token[0] == 'IDENTIFIER' or current_token[1] in ['while', '{', 'return']
+
 
 def StatementList():
     print_rule("<Statement List> -> <Statement> <Statement List Prime>")
@@ -126,7 +255,7 @@ def StatementList():
 
 
 def StatementListPrime():
-    if current_token[0] == 'IDENTIFIER' or current_token[1] in ['while', '{']:
+    if starts_statement():
         print_rule("<Statement List Prime> -> <Statement> <Statement List Prime>")
         Statement()
         StatementListPrime()
@@ -151,6 +280,10 @@ def Statement():
         print_rule("<Statement> -> <Compound>")
         Compound()
 
+    elif current_token[1] == 'return':
+        print_rule("<Statement> -> <Return>")
+        Return()
+
     else:
         error("Statement")
 
@@ -161,18 +294,9 @@ def Statement():
 
 def Compound():
     print_rule("<Compound> -> { <Statement List> }")
-
-    if current_token[1] == '{':
-        next_token()
-    else:
-        error("{")
-
+    match('{')
     StatementList()
-
-    if current_token[1] == '}':
-        next_token()
-    else:
-        error("}")
+    match('}')
 
 
 # ==========================================
@@ -181,20 +305,29 @@ def Compound():
 
 def Assign():
     print_rule("<Assign> -> <Identifier> = <Expression> ;")
-
     Identifier()
+    match('=')
+    Expression()
+    match(';')
 
-    if current_token[1] == '=':
+
+# ==========================================
+# RETURN
+# ==========================================
+
+def Return():
+    if current_token[1] == 'return':
         next_token()
     else:
-        error("=")
-
-    Expression()
+        error("return")
 
     if current_token[1] == ';':
+        print_rule("<Return> -> return ;")
         next_token()
     else:
-        error(";")
+        print_rule("<Return> -> return <Expression> ;")
+        Expression()
+        match(';')
 
 
 # ==========================================
@@ -202,26 +335,31 @@ def Assign():
 # ==========================================
 
 def While():
-    print_rule("<While> -> while ( <Expression> ) <Statement>")
+    print_rule("<While> -> while ( <Condition> ) <Statement>")
+    match('while')
+    match('(')
+    Condition()
+    match(')')
+    Statement()
 
-    if current_token[1] == 'while':
-        next_token()
-    else:
-        error("while")
 
-    if current_token[1] == '(':
-        next_token()
-    else:
-        error("(")
+# ==========================================
+# CONDITION / RELOP
+# ==========================================
 
+def Condition():
+    print_rule("<Condition> -> <Expression> <Relop> <Expression>")
+    Expression()
+    RelOp()
     Expression()
 
-    if current_token[1] == ')':
+
+def RelOp():
+    if current_token[1] in ['==', '!=', '<', '>', '<=', '>=']:
+        print_rule(f"<Relop> -> {current_token[1]}")
         next_token()
     else:
-        error(")")
-
-    Statement()
+        error("Relational Operator")
 
 
 # ==========================================
@@ -230,8 +368,7 @@ def While():
 
 def Identifier():
     print_rule("<Identifier> -> id")
-
-    if current_token[0] == 'IDENTIFIER':
+    if current_token[0] == 'IDENTIFIER' and current_token[1] != 'function':
         next_token()
     else:
         error("Identifier")
@@ -243,7 +380,6 @@ def Identifier():
 
 def Expression():
     print_rule("<Expression> -> <Term> <Expression Prime>")
-
     Term()
     ExpressionPrime()
 
@@ -254,31 +390,11 @@ def ExpressionPrime():
             print_rule("<Expression Prime> -> + <Term> <Expression Prime>")
         else:
             print_rule("<Expression Prime> -> - <Term> <Expression Prime>")
-
         next_token()
         Term()
         ExpressionPrime()
-
-    elif current_token[1] in ['==', '!=', '<', '>', '<=', '>=']:
-        print_rule("<Expression Prime> -> <RelOp> <Term> <Expression Prime>")
-        RelOp()
-        Term()
-        ExpressionPrime()
-
     else:
         print_rule("<Expression Prime> -> ε")
-
-
-# ==========================================
-# RELOP
-# ==========================================
-
-def RelOp():
-    if current_token[1] in ['==', '!=', '<', '>', '<=', '>=']:
-        print_rule(f"<RelOp> -> {current_token[1]}")
-        next_token()
-    else:
-        error("Relational Operator")
 
 
 # ==========================================
@@ -287,7 +403,6 @@ def RelOp():
 
 def Term():
     print_rule("<Term> -> <Factor> <Term Prime>")
-
     Factor()
     TermPrime()
 
@@ -298,7 +413,6 @@ def TermPrime():
             print_rule("<Term Prime> -> * <Factor> <Term Prime>")
         else:
             print_rule("<Term Prime> -> / <Factor> <Term Prime>")
-
         next_token()
         Factor()
         TermPrime()
@@ -307,31 +421,32 @@ def TermPrime():
 
 
 # ==========================================
-# FACTOR
+# FACTOR / PRIMARY
 # ==========================================
 
 def Factor():
+    print_rule("<Factor> -> <Primary>")
+    Primary()
+
+
+def Primary():
     if current_token[0] == 'IDENTIFIER':
-        print_rule("<Factor> -> <Identifier>")
+        print_rule("<Primary> -> <Identifier>")
         Identifier()
 
     elif current_token[0] == 'INTEGER':
-        print_rule("<Factor> -> <Integer>")
+        print_rule("<Primary> -> <Integer>")
         next_token()
 
     elif current_token[0] == 'REAL':
-        print_rule("<Factor> -> <Real>")
+        print_rule("<Primary> -> <Real>")
         next_token()
 
     elif current_token[1] == '(':
-        print_rule("<Factor> -> ( <Expression> )")
-        next_token()
+        print_rule("<Primary> -> ( <Expression> )")
+        match('(')
         Expression()
-
-        if current_token[1] == ')':
-            next_token()
-        else:
-            error(")")
+        match(')')
 
     else:
         error("Identifier | Integer | Real | ( Expression )")

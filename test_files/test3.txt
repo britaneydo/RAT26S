@@ -1,6 +1,14 @@
 @
+function square (num integer)
+{
+return num * num;
+}
+function decrease (value integer)
+{
+return value - 1;
+}
 @
-integer a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y;
+integer a, b, c, d, e, f, g, h;
 @
 a = 1;
 b = 2;
@@ -9,26 +17,10 @@ d = a + b;
 e = d + c;
 while (e > 0)
 {
-    f = e - 1;
-    g = f + a;
-    h = g + b;
-    i = h - c;
-    j = i + d;
-    k = j - e;
-    l = k + f;
-    m = l - g;
-    n = m + h;
-    o = n - i;
-    p = o + j;
-    q = p - k;
-    r = q + l;
-    s = r - m;
-    t = s + n;
-    u = t - o;
-    v = u + p;
-    w = v - q;
-    x = w + r;
-    e = e - 1;
+f = e - 1;
+g = f + a;
+h = g + b;
+e = e - 1;
 }
-y = x + 100;
+a = h + c;
 @
