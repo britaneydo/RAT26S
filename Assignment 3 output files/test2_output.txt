@@ -1,0 +1,56 @@
+test_files/test2.txt results:
+
+('SEPARATOR', '@')
+('IDENTIFIER', 'function')
+('IDENTIFIER', 'inc')
+('SEPARATOR', '(')
+('IDENTIFIER', 'num')
+('KEYWORD', 'integer')
+('SEPARATOR', ')')
+('SEPARATOR', '{')
+('KEYWORD', 'return')
+('IDENTIFIER', 'num')
+('OPERATOR', '+')
+('INTEGER', '1')
+('SEPARATOR', ';')
+('SEPARATOR', '}')
+('SEPARATOR', '@')
+('KEYWORD', 'integer')
+('IDENTIFIER', 'a')
+('SEPARATOR', ';')
+('SEPARATOR', '@')
+('IDENTIFIER', 'a')
+('OPERATOR', '=')
+('INTEGER', '5')
+('SEPARATOR', ';')
+('SEPARATOR', '@')
+
+Listing of Assembly Code:
+1      PUSHI     4
+2      POPM      10000
+3      PUSHM     10000
+4      PUSHI     6
+5      A         
+6      POPM      10001
+7      LABEL     
+8      PUSHM     10001
+9      PUSHI     3
+10     GRT       
+11     JMPZ      17
+12     PUSHM     10001
+13     PUSHI     1
+14     S         
+15     POPM      10001
+16     JMP       7
+17     PUSHM     10000
+18     PUSHM     10001
+19     A         
+20     POPM      10002
+
+Symbol Table:
+Identifier   Memory Location      Type
+a            10000             integer
+b            10001             integer
+c            10002             integer
+
+Press Enter to exit.

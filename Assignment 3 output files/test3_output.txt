@@ -1,0 +1,81 @@
+test_files/test3.txt results:
+
+('SEPARATOR', '@')
+('IDENTIFIER', 'function')
+('IDENTIFIER', 'inc')
+('SEPARATOR', '(')
+('IDENTIFIER', 'num')
+('KEYWORD', 'integer')
+('SEPARATOR', ')')
+('SEPARATOR', '{')
+('KEYWORD', 'return')
+('IDENTIFIER', 'num')
+('OPERATOR', '+')
+('INTEGER', '1')
+('SEPARATOR', ';')
+('SEPARATOR', '}')
+('SEPARATOR', '@')
+('KEYWORD', 'integer')
+('IDENTIFIER', 'a')
+('SEPARATOR', ';')
+('SEPARATOR', '@')
+('IDENTIFIER', 'a')
+('OPERATOR', '=')
+('INTEGER', '5')
+('SEPARATOR', ';')
+('SEPARATOR', '@')
+
+Listing of Assembly Code:
+1      PUSHI     1
+2      POPM      10000
+3      PUSHI     2
+4      POPM      10001
+5      PUSHI     3
+6      POPM      10002
+7      PUSHM     10000
+8      PUSHM     10001
+9      A         
+10     POPM      10003
+11     PUSHM     10003
+12     PUSHM     10002
+13     A         
+14     POPM      10004
+15     LABEL     
+16     PUSHM     10004
+17     PUSHI     0
+18     GRT       
+19     JMPZ      37
+20     PUSHM     10004
+21     PUSHI     1
+22     S         
+23     POPM      10005
+24     PUSHM     10005
+25     PUSHM     10000
+26     A         
+27     POPM      10006
+28     PUSHM     10006
+29     PUSHM     10001
+30     A         
+31     POPM      10007
+32     PUSHM     10004
+33     PUSHI     1
+34     S         
+35     POPM      10004
+36     JMP       15
+37     PUSHM     10007
+38     PUSHM     10002
+39     A         
+40     POPM      10000
+
+Symbol Table:
+Identifier   Memory Location      Type
+a            10000             integer
+b            10001             integer
+c            10002             integer
+d            10003             integer
+e            10004             integer
+f            10005             integer
+g            10006             integer
+h            10007             integer
+
+Press Enter to exit.
